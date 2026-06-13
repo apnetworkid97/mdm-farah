@@ -20,4 +20,11 @@ Aplikasi web Python tanpa dependency eksternal untuk mengelola data mahasiswa de
 python app.py
 ```
 
+## ENVIRONMENT
+
+```bash
+EMAIL_ADDRESS = from@gmail.com
+EMAIL_PASSWORD = xxxx xxxx xxxx xxxx
+```
+
 Lalu buka `http://127.0.0.1:8000`.
