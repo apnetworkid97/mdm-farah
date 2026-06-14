@@ -19,6 +19,11 @@ Aplikasi web Python tanpa dependency eksternal untuk mengelola data mahasiswa de
 ```bash
 python app.py
 ```
+## Seeding / dummy data
+
+```bash
+py seed-students.py
+```
 
 ## ENVIRONMENT
 

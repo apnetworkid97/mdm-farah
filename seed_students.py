@@ -1,5 +1,6 @@
 import json
 import random
+import sys
 
 first_names = [
     "Aditya", "Farah", "Rizky", "Dinda", "Andi",
@@ -23,9 +24,18 @@ majors = [
     "Teknologi Informasi"
 ]
 
-students = []
-
+# Default 1000 data
 TOTAL_DATA = 1000
+
+# Jika user memasukkan jumlah data
+if len(sys.argv) > 1:
+    try:
+        TOTAL_DATA = int(sys.argv[1])
+    except ValueError:
+        print("Jumlah data harus berupa angka.")
+        sys.exit()
+
+students = []
 
 for i in range(TOTAL_DATA):
 
@@ -37,8 +47,7 @@ for i in range(TOTAL_DATA):
     full_name = f"{first} {last}"
 
     email = (
-        full_name
-        .lower()
+        full_name.lower()
         .replace(" ", ".")
         + "@gmail.com"
     )
@@ -68,6 +77,4 @@ with open(
         ensure_ascii=False
     )
 
-print(
-    f"{TOTAL_DATA} data mahasiswa berhasil dibuat."
-)
+print(f"{TOTAL_DATA} data mahasiswa berhasil dibuat.")
