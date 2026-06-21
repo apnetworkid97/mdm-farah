@@ -1,4 +1,6 @@
-
+__pycache__/
+services/__pycache__
+models/__pycache__
 .env
 git-push.txt
 .gitignore
