@@ -1,27 +1,26 @@
 import json
-from pathlib import Path
 from datetime import datetime
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-LOG_FILE = BASE_DIR / "data" / "activity_log.json"
+from services.storage_service import get_data_file
 
 
 def ensure_log_file():
+    log_file = get_data_file("activity_log.json")
 
-    if not LOG_FILE.exists():
+    if not log_file.exists():
 
-        LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        log_file.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(LOG_FILE, "w", encoding="utf-8") as file:
+        with open(log_file, "w", encoding="utf-8") as file:
 
             json.dump([], file, indent=4)
 
 
 def write_log(username: str, action: str, description: str):
     ensure_log_file()
+    log_file = get_data_file("activity_log.json")
 
-    with open(LOG_FILE, "r", encoding="utf-8") as file:
+    with open(log_file, "r", encoding="utf-8") as file:
 
         logs = json.load(file)
 
@@ -34,15 +33,15 @@ def write_log(username: str, action: str, description: str):
         }
     )
 
-    with open(LOG_FILE, "w", encoding="utf-8") as file:
+    with open(log_file, "w", encoding="utf-8") as file:
 
         json.dump(logs, file, indent=4)
 
 
 def get_logs():
-
     ensure_log_file()
+    log_file = get_data_file("activity_log.json")
 
-    with open(LOG_FILE, "r", encoding="utf-8") as file:
+    with open(log_file, "r", encoding="utf-8") as file:
 
         return json.load(file)

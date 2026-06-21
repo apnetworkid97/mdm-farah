@@ -3,6 +3,7 @@ import csv
 import json
 import os
 import re
+import tempfile
 from flask import (
     Flask,
     render_template,
@@ -25,11 +26,12 @@ from services.import_export_service import (
 from services.search_service import LinearSearch, SequentialSearch, BinarySearch
 from services.sort_service import BubbleSort, SelectionSort, MergeSort
 from services.email_service import send_student_profile
+from services.storage_service import get_data_file
 from models.student import Student
 
 app = Flask(__name__)
 
-app.secret_key = "semester3-secret-key"
+app.secret_key = os.getenv("SECRET_KEY", "semester3-secret-key")
 
 # =========================
 
@@ -136,8 +138,7 @@ def dashboard():
 
         average_gpa = round(total_gpa / total_students, 2)
     try:
-
-        with open("data/activity_log.json", "r", encoding="utf-8") as file:
+        with open(get_data_file("activity_log.json"), "r", encoding="utf-8") as file:
 
             logs = json.load(file)
 
@@ -276,7 +277,7 @@ def export_csv():
 
     students = load_students()
 
-    csv_file = "data/export_students.csv"
+    csv_file = get_data_file("export_students.csv")
 
     with open(csv_file, "w", newline="", encoding="utf-8") as file:
 
@@ -306,7 +307,7 @@ def export_json():
 
     students = load_students()
 
-    export_file = "data/export_students.json"
+    export_file = get_data_file("export_students.json")
 
     with open(export_file, "w", encoding="utf-8") as file:
 
@@ -325,7 +326,7 @@ def upload_csv():
 
         return redirect(url_for("students_page"))
 
-    upload_path = "data/temp_import.csv"
+    upload_path = os.path.join(tempfile.gettempdir(), "temp_import.csv")
 
     file.save(upload_path)
 
@@ -347,7 +348,7 @@ def upload_json():
 
         return redirect(url_for("students_page"))
 
-    upload_path = "data/temp_import.json"
+    upload_path = os.path.join(tempfile.gettempdir(), "temp_import.json")
 
     file.save(upload_path)
 
@@ -593,8 +594,7 @@ def settings():
     students = load_students()
 
     try:
-
-        with open("data/activity_log.json", "r", encoding="utf-8") as file:
+        with open(get_data_file("activity_log.json"), "r", encoding="utf-8") as file:
 
             logs = json.load(file)
 
@@ -617,8 +617,7 @@ def settings():
 def activity_log_page():
 
     try:
-
-        with open("data/activity_log.json", "r", encoding="utf-8") as file:
+        with open(get_data_file("activity_log.json"), "r", encoding="utf-8") as file:
 
             logs = json.load(file)
 

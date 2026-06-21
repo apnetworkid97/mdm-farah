@@ -1,43 +1,42 @@
 import json
-from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-USERS_FILE = BASE_DIR / "data" / "users.json"
-
+from services.storage_service import get_data_file
 
 def load_users():
+    users_file = get_data_file("users.json")
 
-    if not USERS_FILE.exists():
+    if not users_file.exists():
 
         return []
 
-    with open(USERS_FILE, "r", encoding="utf-8") as file:
+    with open(users_file, "r", encoding="utf-8") as file:
 
         return json.load(file)
 
+
 def save_users(users):
+    users_file = get_data_file("users.json")
 
-        with open(USERS_FILE, "w", encoding="utf-8") as file:
+    with open(users_file, "w", encoding="utf-8") as file:
 
-            json.dump(users, file, indent=4)
+        json.dump(users, file, indent=4)
+
 
 def login(username, password):
+    users = load_users()
 
-        users = load_users()
+    for user in users:
 
-        for user in users:
+        if user["username"] == username and user["password"] == password:
 
-            if user["username"] == username and user["password"] == password:
+            return True
 
-                return True
+    return False
 
-        return False
 
 def register_user(username, password, email):
+    users = load_users()
 
-        users = load_users()
+    users.append({"username": username, "password": password, "email": email})
 
-        users.append({"username": username, "password": password, "email": email})
-
-        save_users(users)
+    save_users(users)

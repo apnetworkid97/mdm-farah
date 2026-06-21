@@ -1,22 +1,18 @@
 import json
 import csv
 
-from pathlib import Path
-
 from models.student import Student
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-STUDENTS_FILE = BASE_DIR / "data" / "students.json"
+from services.storage_service import get_data_file
 
 
 def load_students():
+    students_file = get_data_file("students.json")
 
-    if not STUDENTS_FILE.exists():
+    if not students_file.exists():
 
         return []
 
-    with open(STUDENTS_FILE, "r", encoding="utf-8") as file:
+    with open(students_file, "r", encoding="utf-8") as file:
 
         data = json.load(file)
 
@@ -24,8 +20,9 @@ def load_students():
 
 
 def save_students(students):
+    students_file = get_data_file("students.json")
 
-    with open(STUDENTS_FILE, "w", encoding="utf-8") as file:
+    with open(students_file, "w", encoding="utf-8") as file:
 
         json.dump([student.to_dict() for student in students], file, indent=4)
 

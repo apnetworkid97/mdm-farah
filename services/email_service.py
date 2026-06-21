@@ -2,27 +2,24 @@ import json
 import random
 import smtplib
 
-from pathlib import Path
-
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 import os
+from services.storage_service import get_data_file
 
 load_dotenv()
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-OTP_FILE = BASE_DIR / "data" / "otp.json"
 
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 
 def ensure_otp_file():
+    otp_file = get_data_file("otp.json")
 
-    if not OTP_FILE.exists():
+    if not otp_file.exists():
 
-        with open(OTP_FILE, "w", encoding="utf-8") as file:
+        with open(otp_file, "w", encoding="utf-8") as file:
 
             json.dump({}, file)
 
@@ -33,25 +30,25 @@ def generate_otp():
 
 
 def save_otp(email, otp):
-
     ensure_otp_file()
+    otp_file = get_data_file("otp.json")
 
-    with open(OTP_FILE, "r", encoding="utf-8") as file:
+    with open(otp_file, "r", encoding="utf-8") as file:
 
         data = json.load(file)
 
     data[email] = otp
 
-    with open(OTP_FILE, "w", encoding="utf-8") as file:
+    with open(otp_file, "w", encoding="utf-8") as file:
 
         json.dump(data, file, indent=4)
 
 
 def verify_otp(email, otp):
-
     ensure_otp_file()
+    otp_file = get_data_file("otp.json")
 
-    with open(OTP_FILE, "r", encoding="utf-8") as file:
+    with open(otp_file, "r", encoding="utf-8") as file:
 
         data = json.load(file)
 

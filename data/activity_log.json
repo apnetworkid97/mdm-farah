@@ -256,5 +256,17 @@
         "username": "admin",
         "action": "LOGOUT",
         "description": "Logout sistem"
+    },
+    {
+        "timestamp": "2026-06-21 22:51:39",
+        "username": "admin",
+        "action": "LOGIN",
+        "description": "Berhasil login"
+    },
+    {
+        "timestamp": "2026-06-21 22:54:26",
+        "username": "admin",
+        "action": "LOGIN",
+        "description": "Berhasil login"
     }
 ]
